@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class AppContainer(context: Context) {
     private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://pilltime.onrender.com")
+        .baseUrl("https://pilltime.onrender.com/api/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

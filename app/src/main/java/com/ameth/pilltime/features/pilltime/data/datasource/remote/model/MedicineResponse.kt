@@ -1,5 +1,7 @@
 package com.ameth.pilltime.features.pilltime.data.datasource.remote.model
 
+import com.google.gson.annotations.SerializedName
+
 data class MedicationsListResponse(
     val medications: List<MedicationDto>,
     val total: Int
@@ -29,7 +31,11 @@ data class SearchResponse(
 data class SearchResultDto(
     val rxcui: String,
     val name: String,
-    val synonym: String?
+    val synonym: String?,
+    val tty: String? = null,
+    val language: String? = null,
+    val suppress: String? = null,
+    val umlscui: String? = null
 )
 
 data class MessageResponse(

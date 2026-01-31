@@ -30,17 +30,25 @@ class MedicineViewModel(
     }
 
     private fun loadMedicines() {
-        _uiState.update { it.copy(isLoading = true) }
+        _uiState.update { it.copy(isLoading = true, error = null) }
 
         viewModelScope.launch {
             val result = getMedicineUseCase()
             _uiState.update { currentState ->
                 result.fold(
                     onSuccess = { list ->
-                        currentState.copy(isLoading = false, medicines = list)
+                        currentState.copy(
+                            isLoading = false,
+                            medicines = list,
+                            error = null
+                        )
                     },
                     onFailure = { error ->
-                        currentState.copy(isLoading = false, error = error.message)
+                        currentState.copy(
+                            isLoading = false,
+                            medicines = emptyList(),
+                            error = null
+                        )
                     }
                 )
             }
@@ -55,14 +63,26 @@ class MedicineViewModel(
             _uiState.update { currentState ->
                 result.fold(
                     onSuccess = { searchResponse ->
-                        currentState.copy(isLoading = false, error = null)
+                        currentState.copy(
+                            isLoading = false,
+                            error = null,
+                            searchResults = searchResponse.medications
+                        )
                     },
                     onFailure = { error ->
-                        currentState.copy(isLoading = false, error = error.message)
+                        currentState.copy(
+                            isLoading = false,
+                            searchResults = emptyList(),
+                            error = null
+                        )
                     }
                 )
             }
         }
+    }
+
+    fun clearSearchResults() {
+        _uiState.update { it.copy(searchResults = emptyList()) }
     }
 
     fun saveMedication(
@@ -104,10 +124,8 @@ class MedicineViewModel(
             result.fold(
                 onSuccess = { message ->
                     loadMedicines()
-                    _uiState.update { it.copy(error = null) }
                 },
                 onFailure = { error ->
-                    _uiState.update { it.copy(error = error.message) }
                 }
             )
         }
@@ -119,19 +137,15 @@ class MedicineViewModel(
             result.fold(
                 onSuccess = { message ->
                     loadMedicines()
-                    _uiState.update { it.copy(error = null) }
                 },
                 onFailure = { error ->
-                    _uiState.update { it.copy(error = error.message) }
                 }
             )
         }
     }
 
     fun refresh() {
-        _uiState.update { it.copy(isRefreshing = true) }
         loadMedicines()
-        _uiState.update { it.copy(isRefreshing = false) }
     }
 
     fun clearError() {
