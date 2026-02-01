@@ -22,6 +22,7 @@ import com.ameth.pilltime.features.pilltime.presentation.viewmodels.MedicineView
 import com.ameth.pilltime.features.pilltime.presentation.components.SearchMedicationCard
 import com.ameth.pilltime.features.pilltime.presentation.components.ReminderCard
 import com.ameth.pilltime.features.pilltime.presentation.components.MedicineItem
+import com.ameth.pilltime.features.pilltime.presentation.utils.getCleanMedicineName
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +32,6 @@ fun MedicineScreen(
     val viewModel: MedicineViewModel = viewModel(factory = factory)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // Estado para el medicamento seleccionado de la búsqueda
     var selectedMedicationName by remember { mutableStateOf("") }
     var selectedRxcui by remember { mutableStateOf<String?>(null) }
 
@@ -72,7 +72,6 @@ fun MedicineScreen(
                 .padding(innerPadding)
         ) {
             when {
-                // Solo mostrar loading en la carga inicial
                 uiState.isLoading && uiState.medicines.isEmpty() -> {
                     Column(
                         modifier = Modifier.align(Alignment.Center),
@@ -91,7 +90,6 @@ fun MedicineScreen(
                         )
                     }
                 }
-                // Solo mostrar error si es un error REAL (no "no hay medicamentos")
                 uiState.error != null -> {
                     Column(
                         modifier = Modifier
@@ -155,14 +153,12 @@ fun MedicineScreen(
                         }
                     }
                 }
-                // Estado normal: mostrar pantalla con formulario y lista (puede estar vacía)
                 else -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(bottom = 24.dp),
                         verticalArrangement = Arrangement.spacedBy(0.dp)
                     ) {
-                        // Search card
                         item {
                             Box(modifier = Modifier.padding(16.dp)) {
                                 SearchMedicationCard(
@@ -171,7 +167,7 @@ fun MedicineScreen(
                                     },
                                     searchResults = uiState.searchResults,
                                     onSelectMedication = { result ->
-                                        selectedMedicationName = result.name
+                                        selectedMedicationName = getCleanMedicineName(result)
                                         selectedRxcui = result.rxcui
                                         viewModel.clearSearchResults()
                                     },
@@ -182,7 +178,6 @@ fun MedicineScreen(
                             }
                         }
 
-                        // Reminder card
                         item {
                             Box(modifier = Modifier.padding(horizontal = 16.dp)) {
                                 ReminderCard(
@@ -196,7 +191,6 @@ fun MedicineScreen(
                                             frequency,
                                             startTime
                                         )
-                                        // Limpiar después de guardar
                                         selectedMedicationName = ""
                                         selectedRxcui = null
                                     }
@@ -208,7 +202,6 @@ fun MedicineScreen(
                             Spacer(modifier = Modifier.height(24.dp))
                         }
 
-                        // My medications header
                         item {
                             Row(
                                 modifier = Modifier
@@ -243,7 +236,6 @@ fun MedicineScreen(
                             Spacer(modifier = Modifier.height(16.dp))
                         }
 
-                        // Empty state - DISEÑO MODERNO
                         if (uiState.medicines.isEmpty()) {
                             item {
                                 Column(
@@ -252,7 +244,6 @@ fun MedicineScreen(
                                         .padding(horizontal = 32.dp, vertical = 48.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    // Icon with background
                                     Surface(
                                         shape = RoundedCornerShape(32.dp),
                                         color = MaterialTheme.colorScheme.primaryContainer,
@@ -273,7 +264,6 @@ fun MedicineScreen(
 
                                     Spacer(modifier = Modifier.height(32.dp))
 
-                                    // Title
                                     Text(
                                         text = "No tienes medicamentos",
                                         style = MaterialTheme.typography.headlineMedium,
@@ -284,7 +274,6 @@ fun MedicineScreen(
 
                                     Spacer(modifier = Modifier.height(12.dp))
 
-                                    // Description
                                     Text(
                                         text = "Agrega tu primer medicamento usando el formulario de arriba para comenzar a llevar un control de tus tomas",
                                         style = MaterialTheme.typography.bodyLarge,
@@ -296,7 +285,6 @@ fun MedicineScreen(
                             }
                         }
 
-                        // Medications list
                         items(uiState.medicines) { medicine ->
                             MedicineItem(
                                 medicine = medicine,
