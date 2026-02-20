@@ -1,4 +1,7 @@
 package com.ameth.pilltime
 
-class PillTimeHiltApp {
-}
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class PillTimeHiltApp : Application()

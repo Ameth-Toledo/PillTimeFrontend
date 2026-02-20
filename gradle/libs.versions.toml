@@ -19,7 +19,7 @@ ioCoilVersion = "2.7.0"
 materialIconsExtended = "1.7.6"
 hilt = "2.59.1"
 hiltNavigationCompose = "1.3.0"
-ksp = "1.9.21-1.0.16"
+ksp = "2.0.21-1.0.28"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

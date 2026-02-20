@@ -7,8 +7,9 @@ import com.ameth.pilltime.features.pilltime.data.datasource.remote.model.Medicat
 import com.ameth.pilltime.features.pilltime.data.datasource.remote.model.MessageResponse
 import com.ameth.pilltime.features.pilltime.data.datasource.remote.model.SearchResponse
 import com.ameth.pilltime.features.pilltime.domain.repositories.IMedicineRepository
+import javax.inject.Inject
 
-class MedicineRepositoryImpl(
+class MedicineRepositoryImpl @Inject constructor(
     private val api: PillTimeApi
 ) : IMedicineRepository {
 

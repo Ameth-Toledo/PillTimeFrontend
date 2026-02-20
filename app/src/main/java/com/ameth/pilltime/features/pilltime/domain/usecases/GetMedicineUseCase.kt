@@ -3,8 +3,9 @@ package com.ameth.pilltime.features.pilltime.domain.usecases
 import com.ameth.pilltime.features.pilltime.domain.entities.Medicine
 import com.ameth.pilltime.features.pilltime.domain.repositories.IMedicineRepository
 import com.ameth.pilltime.features.pilltime.data.datasource.remote.mapper.toDomain
+import javax.inject.Inject
 
-class GetMedicineUseCase(
+class GetMedicineUseCase @Inject constructor(
     private val repository: IMedicineRepository
 ) {
     suspend operator fun invoke(): Result<List<Medicine>> {

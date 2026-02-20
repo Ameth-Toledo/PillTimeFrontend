@@ -9,12 +9,15 @@ import com.ameth.pilltime.features.pilltime.domain.usecases.MarkAsTakenUseCase
 import com.ameth.pilltime.features.pilltime.domain.usecases.DeleteMedicationUseCase
 import com.ameth.pilltime.features.pilltime.data.datasource.remote.model.MedicationRequest
 import com.ameth.pilltime.features.pilltime.presentation.screens.MedicineUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MedicineViewModel(
+@HiltViewModel
+class MedicineViewModel @Inject constructor(
     private val getMedicineUseCase: GetMedicineUseCase,
     private val searchMedicationUseCase: SearchMedicationUseCase,
     private val createMedicationUseCase: CreateMedicationUseCase,
