@@ -15,10 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ameth.pilltime.features.pilltime.presentation.viewmodels.MedicineViewModel
-import com.ameth.pilltime.features.pilltime.presentation.viewmodels.MedicineViewModelFactory
 import com.ameth.pilltime.features.pilltime.presentation.components.SearchMedicationCard
 import com.ameth.pilltime.features.pilltime.presentation.components.ReminderCard
 import com.ameth.pilltime.features.pilltime.presentation.components.MedicineItem
@@ -26,10 +25,8 @@ import com.ameth.pilltime.features.pilltime.presentation.utils.getCleanMedicineN
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MedicineScreen(
-    factory: MedicineViewModelFactory
-) {
-    val viewModel: MedicineViewModel = viewModel(factory = factory)
+fun MedicineScreen() {
+    val viewModel: MedicineViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     var selectedMedicationName by remember { mutableStateOf("") }
